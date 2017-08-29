@@ -17,8 +17,8 @@ public struct ParticleSystemValue<T>: ParticleSystemValueType {
     self.spread = spread
   }
 
-  var origin: T
-  var spread: T
+  public var origin: T
+  public var spread: T
 }
 
 extension ParticleSystemValueType where ValueType == Int {
