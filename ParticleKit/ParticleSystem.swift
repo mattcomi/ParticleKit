@@ -16,7 +16,7 @@ public class ParticleSystemIterator: IteratorProtocol {
     }
 
     return nil
-   }
+  }
 }
 
 public class ParticleSystem: Sequence {
@@ -29,7 +29,7 @@ public class ParticleSystem: Sequence {
 
   public var properties = ParticleSystemProperties()
 
-  init(capacity: Int, colorGradient: Gradient<UIColor>, sizeGradient: Gradient<CGFloat>) {
+  public init(capacity: Int, colorGradient: Gradient<UIColor>, sizeGradient: Gradient<CGFloat>) {
     for _ in 0..<capacity {
       pool.append(Particle())
     }
@@ -40,7 +40,7 @@ public class ParticleSystem: Sequence {
     nextAvailableParticleIndex = 0
   }
 
-  func emit() {
+  public func emit() {
     let particle = nextAvailableParticle()
 
     particle.position = properties.position.randomValue
@@ -73,7 +73,7 @@ public class ParticleSystem: Sequence {
     }
   }
 
-  func update() {
+  public func update() {
     var particle = firstParticle
 
     while particle != nil {
