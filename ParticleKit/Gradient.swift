@@ -13,6 +13,8 @@ struct GradientItem<T:Interpolatable> {
 public class Gradient<T:Interpolatable> {
   private var items = [GradientItem<T>]()
 
+  public init() {}
+
   /// Adds a value at the specified location.
   public func add(location: CGFloat, value: T) {
     items.append(GradientItem(location: location, value: value))

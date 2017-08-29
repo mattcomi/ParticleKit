@@ -2,21 +2,26 @@
 
 import Foundation
 
-protocol EmitterValueType {
+protocol ParticleSystemValueType {
   associatedtype ValueType
 
   var origin: ValueType { get }
   var spread: ValueType { get }
 }
 
-public struct EmitterValue<T>: EmitterValueType {
+public struct ParticleSystemValue<T>: ParticleSystemValueType {
   typealias ValueType = T
+
+  public init(origin: T, spread: T) {
+    self.origin = origin
+    self.spread = spread
+  }
 
   var origin: T
   var spread: T
 }
 
-extension EmitterValueType where ValueType == Int {
+extension ParticleSystemValueType where ValueType == Int {
   var randomValue: Int {
     let value = CGFloat(origin) + random(location: CGFloat(spread) / -2.0, length: CGFloat(spread))
 
@@ -24,19 +29,19 @@ extension EmitterValueType where ValueType == Int {
   }
 }
 
-extension EmitterValueType where ValueType == CGFloat {
+extension ParticleSystemValueType where ValueType == CGFloat {
   var randomValue: CGFloat {
     return origin + random(location: spread / -2.0, length: spread)
   }
 }
 
-extension EmitterValueType where ValueType == CGPoint {
+extension ParticleSystemValueType where ValueType == CGPoint {
   var randomValue: CGPoint {
     return origin + random(location: spread / -2.0, length: spread)
   }
 }
 
-extension EmitterValueType where ValueType == Angle {
+extension ParticleSystemValueType where ValueType == Angle {
   var randomValue: Angle {
     return origin + Angle(radians: random(location: spread.radians / -2.0, length: spread.radians))
   }
@@ -44,21 +49,23 @@ extension EmitterValueType where ValueType == Angle {
 
 /// The properties of emitted particles.
 public struct ParticleSystemProperties {
+  public init() { }
+
   /// The position at which particles should be emitted.
-  public var position: EmitterValue<CGPoint> = EmitterValue(origin: .zero, spread: .zero)
+  public var position: ParticleSystemValue<CGPoint> = ParticleSystemValue(origin: .zero, spread: .zero)
 
   /// The lifetime (in frames) of emitted particles.
-  public var lifetime: EmitterValue<Int> = EmitterValue(origin: 0, spread: 0)
+  public var lifetime: ParticleSystemValue<Int> = ParticleSystemValue(origin: 0, spread: 0)
 
   /// The angle at which particles should be emitted.
-  var linearVelocityAngle: EmitterValue<Angle> = EmitterValue(origin: .zero, spread: .zero)
+  public var linearVelocityAngle: ParticleSystemValue<Angle> = ParticleSystemValue(origin: .zero, spread: .zero)
 
   /// The speed (in units per frame) at which particles should be emitted.
-  var linearVelocitySpeed: EmitterValue<CGFloat> = EmitterValue(origin: 0, spread: 0)
+  public var linearVelocitySpeed: ParticleSystemValue<CGFloat> = ParticleSystemValue(origin: 0, spread: 0)
 
   /// The initial angle of particles.
-  var angle: EmitterValue<Angle> = EmitterValue(origin: .zero, spread: .zero)
+  public var angle: ParticleSystemValue<Angle> = ParticleSystemValue(origin: .zero, spread: .zero)
 
   /// The angular velocity (in angle per frame) of emitted particles.
-  var angularVelocity: EmitterValue<Angle> = EmitterValue(origin: .zero, spread: .zero)
+  public var angularVelocity: ParticleSystemValue<Angle> = ParticleSystemValue(origin: .zero, spread: .zero)
 }

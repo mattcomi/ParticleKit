@@ -17,7 +17,7 @@
 		B624B7AD1F53DBD8009B2D4A /* Particle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B624B7AC1F53DBD8009B2D4A /* Particle.swift */; };
 		B624B7AF1F53DC80009B2D4A /* ParticleSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B624B7AE1F53DC80009B2D4A /* ParticleSystem.swift */; };
 		B624B7B11F53E0D0009B2D4A /* CGPoint+mattcomi.swift in Sources */ = {isa = PBXBuildFile; fileRef = B624B7B01F53E0D0009B2D4A /* CGPoint+mattcomi.swift */; };
-		B624B7B71F53EE6C009B2D4A /* Emitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B624B7B61F53EE6C009B2D4A /* Emitter.swift */; };
+		B624B7B71F53EE6C009B2D4A /* ParticleSystemProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B624B7B61F53EE6C009B2D4A /* ParticleSystemProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,7 @@
 		B624B7AC1F53DBD8009B2D4A /* Particle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Particle.swift; sourceTree = "<group>"; };
 		B624B7AE1F53DC80009B2D4A /* ParticleSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticleSystem.swift; sourceTree = "<group>"; };
 		B624B7B01F53E0D0009B2D4A /* CGPoint+mattcomi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+mattcomi.swift"; sourceTree = "<group>"; };
-		B624B7B61F53EE6C009B2D4A /* Emitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Emitter.swift; sourceTree = "<group>"; };
+		B624B7B61F53EE6C009B2D4A /* ParticleSystemProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticleSystemProperties.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +68,7 @@
 			children = (
 				B624B7A41F53CE12009B2D4A /* Angle.swift */,
 				B624B7B01F53E0D0009B2D4A /* CGPoint+mattcomi.swift */,
-				B624B7B61F53EE6C009B2D4A /* Emitter.swift */,
+				B624B7B61F53EE6C009B2D4A /* ParticleSystemProperties.swift */,
 				B624B7A61F53D138009B2D4A /* Gradient.swift */,
 				B624B7991F53CC80009B2D4A /* Info.plist */,
 				B624B7AA1F53D388009B2D4A /* Math.swift */,
@@ -171,7 +171,7 @@
 				B624B7AD1F53DBD8009B2D4A /* Particle.swift in Sources */,
 				B624B7A91F53D257009B2D4A /* UIColor+mattcomi.swift in Sources */,
 				B624B7A71F53D138009B2D4A /* Gradient.swift in Sources */,
-				B624B7B71F53EE6C009B2D4A /* Emitter.swift in Sources */,
+				B624B7B71F53EE6C009B2D4A /* ParticleSystemProperties.swift in Sources */,
 				B624B7AB1F53D388009B2D4A /* Math.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
