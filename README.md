@@ -1,2 +1,2 @@
 # ParticleKit
-A 2D particle system
+A 2D particle system.
