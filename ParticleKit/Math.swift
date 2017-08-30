@@ -19,7 +19,7 @@ public func lerp<T: FloatingPoint>(min: T, max: T, factor: T) -> T {
 }
 
 public func random<T: FloatingPoint>(location: T, length: T) -> T {
-  guard length != 0 else { fatalError("Unexpected length") }
+  guard length != 0 else { return location }
 
   let randomNumber = T(arc4random()) / T(UINT32_MAX)
 
