@@ -13,16 +13,38 @@ struct GradientItem<T:Interpolatable> {
 public class Gradient<T:Interpolatable> {
   private var items = [GradientItem<T>]()
 
-  public init() {}
+  /// Creates a gradient using the specified values at locations 0 and 1.
+  public convenience init(first: T, last: T) {
+    self.init()
 
-  /// Adds a value at the specified location.
-  public func add(location: CGFloat, value: T) {
-    items.append(GradientItem(location: location, value: value))
-    items.sort { return $0.location < $1.location }
+    add(location: 0, value: first)
+    add(location: 1, value: last)
   }
 
-  /// Returns the item at the specified location.
-  public func item(at location: CGFloat) -> T {
+  /// Creates an empty gradient.
+  public init() { }
+
+  /// Adds a value at the specified location, replacing an existing value if necessary.
+  /// - parameter location: The location of the value.
+  /// - parameter value: The value.
+  public func add(location: CGFloat, value: T) {
+    if let indexOfExistingItem = items.index(where: { $0.location == location }) {
+      items[indexOfExistingItem].value = value
+    } else {
+      items.append(GradientItem(location: location, value: value))
+      items.sort { return $0.location < $1.location }
+    }
+  }
+
+  /// Removes all values.
+  public func removeAllValues() {
+    items.removeAll()
+  }
+
+  /// Returns the value at the specified location. Asserts that there is at least one value.
+  public func value(at location: CGFloat) -> T {
+    guard items.count != 0 else { fatalError("Unexpected items.count") }
+
     let first = items.first!
     let last = items.last!
 

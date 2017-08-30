@@ -54,18 +54,18 @@ public struct ParticleSystemProperties {
   /// The position at which particles should be emitted.
   public var position: ParticleSystemValue<CGPoint> = ParticleSystemValue(origin: .zero, spread: .zero)
 
-  /// The lifetime (in frames) of emitted particles.
-  public var lifetime: ParticleSystemValue<Int> = ParticleSystemValue(origin: 0, spread: 0)
+  /// The lifetime (in updates) of emitted particles. The default value is `ParticleSystemValue(origin: 60, spread: 0)`
+  public var lifetime: ParticleSystemValue<Int> = ParticleSystemValue(origin: 60, spread: 0)
 
   /// The angle at which particles should be emitted.
   public var linearVelocityAngle: ParticleSystemValue<Angle> = ParticleSystemValue(origin: .zero, spread: .zero)
 
-  /// The speed (in units per frame) at which particles should be emitted.
+  /// The speed (in units per update) at which particles should be emitted.
   public var linearVelocitySpeed: ParticleSystemValue<CGFloat> = ParticleSystemValue(origin: 0, spread: 0)
 
   /// The initial angle of particles.
   public var angle: ParticleSystemValue<Angle> = ParticleSystemValue(origin: .zero, spread: .zero)
 
-  /// The angular velocity (in angle per frame) of emitted particles.
+  /// The angular velocity (in angle per update) of emitted particles.
   public var angularVelocity: ParticleSystemValue<Angle> = ParticleSystemValue(origin: .zero, spread: .zero)
 }

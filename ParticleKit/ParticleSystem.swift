@@ -22,24 +22,25 @@ public class ParticleSystemIterator: IteratorProtocol {
 public class ParticleSystem: Sequence {
   private var pool = [Particle]()
   private var nextAvailableParticleIndex = 0
-  private var colorGradient: Gradient<UIColor>
-  private var sizeGradient: Gradient<CGFloat>
   private var firstParticle: Particle?
   private var lastParticle: Particle?
 
   public var properties = ParticleSystemProperties()
+  public var colorGradient: Gradient<UIColor> = Gradient(first: UIColor.red, last: UIColor.yellow)
+  public var sizeGradient: Gradient<CGFloat> = Gradient(first: 1, last: 1)
 
-  public init(capacity: Int, colorGradient: Gradient<UIColor>, sizeGradient: Gradient<CGFloat>) {
+  /// Creates and returns a particle system.
+  /// - parameter capacity: The number of particles that may exist at any given time. If a particle is emitted beyond 
+  ///                       this capacity, an existing particle will be replaced.
+  public init(capacity: Int) {
     for _ in 0..<capacity {
       pool.append(Particle())
     }
 
-    self.colorGradient = colorGradient
-    self.sizeGradient = sizeGradient
-
     nextAvailableParticleIndex = 0
   }
 
+  /// Emits a particle.
   public func emit() {
     let particle = nextAvailableParticle()
 
@@ -73,6 +74,7 @@ public class ParticleSystem: Sequence {
     }
   }
 
+  /// Updates the particle system.
   public func update() {
     var particle = firstParticle
 
@@ -89,9 +91,9 @@ public class ParticleSystem: Sequence {
       } else {
         let life = 1 - (CGFloat(particle!.remainingLifetime) / CGFloat(particle!.lifetime))
 
-        let size = sizeGradient.item(at: life)
+        let size = sizeGradient.value(at: life)
 
-        particle!.color = colorGradient.item(at: life)
+        particle!.color = colorGradient.value(at: life)
 
         var quad = Quad(rect: CGRect(x: size / -2.0, y: size / -2.0, width: size, height: size))
 
@@ -110,6 +112,7 @@ public class ParticleSystem: Sequence {
     }
   }
 
+  /// Removes all particles.
   public func removeAllParticles() {
     for i in 0..<pool.count {
       pool[i] = Particle()
