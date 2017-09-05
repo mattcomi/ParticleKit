@@ -2,7 +2,7 @@
 
 import Foundation
 
-public struct Angle {
+public struct Angle: Equatable {
   /// A zero angle.
   public static let zero = Angle(radians: 0)
 
@@ -22,6 +22,10 @@ public struct Angle {
   /// The angle in degrees.
   public var degrees: CGFloat {
     return radians * (180 / .pi)
+  }
+
+  public static func == (lhs: Angle, rhs: Angle) -> Bool {
+    return lhs.radians == rhs.radians
   }
 }
 

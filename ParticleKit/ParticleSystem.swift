@@ -11,7 +11,7 @@ public class ParticleSystemIterator: IteratorProtocol {
  
   public func next() -> Particle? {
     if let particle = self.particle {
-      self.particle = particle.nextParticle
+      self.particle = particle.next
       return particle
     }
 
@@ -22,8 +22,8 @@ public class ParticleSystemIterator: IteratorProtocol {
 public class ParticleSystem: Sequence {
   private var pool = [Particle]()
   private var nextAvailableParticleIndex = 0
-  private var firstParticle: Particle?
-  private var lastParticle: Particle?
+  private weak var firstParticle: Particle?
+  private weak var lastParticle: Particle?
 
   public var properties = ParticleSystemProperties()
   public var colorGradient: Gradient<UIColor> = Gradient(first: UIColor.red, last: UIColor.yellow)
@@ -44,19 +44,19 @@ public class ParticleSystem: Sequence {
   public func emit() {
     let particle = nextAvailableParticle()
 
-    particle.position = properties.position.randomValue
+    particle.position = properties.position.random
 
-    let linearVelocityAngle = properties.linearVelocityAngle.randomValue
-    let linearVelocitySpeed = properties.linearVelocitySpeed.randomValue
+    let linearVelocityAngle = properties.linearVelocityAngle.random
+    let linearVelocitySpeed = properties.linearVelocitySpeed.random
 
     particle.linearVelocity = CGPoint(
       x: cos(linearVelocityAngle.radians) * linearVelocitySpeed,
       y: sin(linearVelocityAngle.radians) * linearVelocitySpeed)
 
-    particle.angle = properties.angle.randomValue
-    particle.angularVelocity = properties.angularVelocity.randomValue
+    particle.angle = properties.angle.random
+    particle.angularVelocity = properties.angularVelocity.random
 
-    let lifetime = properties.lifetime.randomValue
+    let lifetime = properties.lifetime.random
 
     particle.lifetime = lifetime
     particle.remainingLifetime = lifetime
@@ -65,10 +65,10 @@ public class ParticleSystem: Sequence {
       firstParticle = particle
       lastParticle = particle
     } else {
-      lastParticle!.nextParticle = particle
+      lastParticle!.next = particle
 
-      particle.prevParticle = lastParticle!
-      particle.nextParticle = nil
+      particle.prev = lastParticle!
+      particle.next = nil
 
       lastParticle = particle
     }
@@ -81,12 +81,12 @@ public class ParticleSystem: Sequence {
     while particle != nil {
       if particle?.remainingLifetime == 0 {
         // unlink this particle
-        if particle?.prevParticle != nil {
-          particle?.prevParticle?.nextParticle = particle?.nextParticle
+        if particle?.prev != nil {
+          particle?.prev?.next = particle?.next
         }
 
         if particle === firstParticle {
-          firstParticle = particle?.nextParticle
+          firstParticle = particle?.next
         }
       } else {
         let life = 1 - (CGFloat(particle!.remainingLifetime) / CGFloat(particle!.lifetime))
@@ -108,14 +108,14 @@ public class ParticleSystem: Sequence {
 
       particle?.remainingLifetime -= 1
 
-      particle = particle?.nextParticle
+      particle = particle?.next
     }
   }
 
   /// Removes all particles.
   public func removeAllParticles() {
     for i in 0..<pool.count {
-      pool[i] = Particle()
+      pool[i].reset()
     }
 
     nextAvailableParticleIndex = 0

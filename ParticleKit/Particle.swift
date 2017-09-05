@@ -9,8 +9,8 @@ public class Particle {
   public internal(set) var angularVelocity: Angle
   public internal(set) var lifetime: Int
   public internal(set) var remainingLifetime: Int
-  public internal(set) var prevParticle: Particle?
-  public internal(set) var nextParticle: Particle?
+  public internal(set) weak var prev: Particle?
+  public internal(set) weak var next: Particle?
   public internal(set) var quad = Quad(rect: .zero)
   public internal(set) var color = UIColor.white
 
@@ -21,8 +21,8 @@ public class Particle {
       angle: .zero,
       angularVelocity: .zero,
       lifetime: 0,
-      nextParticle: nil,
-      prevParticle: nil)
+      prev: nil,
+      next: nil)
   }
 
   init(
@@ -31,8 +31,8 @@ public class Particle {
     angle: Angle,
     angularVelocity: Angle,
     lifetime: Int,
-    nextParticle: Particle?,
-    prevParticle: Particle?) {
+    prev: Particle?,
+    next: Particle?) {
 
     self.position = position
     self.linearVelocity = linearVelocity
@@ -40,7 +40,17 @@ public class Particle {
     self.angularVelocity = angularVelocity
     self.lifetime = lifetime
     self.remainingLifetime = lifetime
-    self.nextParticle = nextParticle
-    self.prevParticle = prevParticle
+    self.prev = prev
+    self.next = next    
+  }
+
+  func reset() {
+    position = .zero
+    linearVelocity = .zero
+    angle = .zero
+    angularVelocity = .zero
+    lifetime = 0
+    prev = nil
+    next = nil
   }
 }

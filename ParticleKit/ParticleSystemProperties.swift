@@ -21,29 +21,65 @@ public struct ParticleSystemValue<T>: ParticleSystemValueType {
   public var spread: T
 }
 
-extension ParticleSystemValueType where ValueType == Int {
-  var randomValue: Int {
-    let value = CGFloat(origin) + random(location: CGFloat(spread) / -2.0, length: CGFloat(spread))
+public extension ParticleSystemValue where T == Int {
+  var random: Int {
+    let value = CGFloat(origin) + ParticleKit.random(location: CGFloat(spread) / -2.0, length: CGFloat(spread))
+
+    return ValueType(value)
+  }
+
+  var min: Int {
+    let value = CGFloat(origin) + CGFloat(spread) / -2.0
+
+    return ValueType(value)
+  }
+
+  var max: Int {
+    let value = CGFloat(origin) + CGFloat(spread) / 2.0
 
     return ValueType(value)
   }
 }
 
-extension ParticleSystemValueType where ValueType == CGFloat {
-  var randomValue: CGFloat {
-    return origin + random(location: spread / -2.0, length: spread)
+public extension ParticleSystemValue where T == CGFloat {
+  var random: CGFloat {
+    return origin + ParticleKit.random(location: spread / -2.0, length: spread)
+  }
+
+  var min: CGFloat {
+    return origin + spread / -2.0
+  }
+
+  var max: CGFloat {
+    return origin + spread / 2.0
   }
 }
 
-extension ParticleSystemValueType where ValueType == CGPoint {
-  var randomValue: CGPoint {
-    return origin + random(location: spread / -2.0, length: spread)
+public extension ParticleSystemValue where T == CGPoint {
+  var random: CGPoint {
+    return origin + ParticleKit.random(location: spread / -2.0, length: spread)
+  }
+
+  var min: CGPoint {
+    return origin + (spread / -2.0)
+  }
+
+  var max: CGPoint {
+    return origin + (spread / 2.0)
   }
 }
 
-extension ParticleSystemValueType where ValueType == Angle {
-  var randomValue: Angle {
-    return origin + Angle(radians: random(location: spread.radians / -2.0, length: spread.radians))
+public extension ParticleSystemValue where T == Angle {
+  var random: Angle {
+    return origin + Angle(radians: ParticleKit.random(location: spread.radians / -2.0, length: spread.radians))
+  }
+
+  var min: Angle {
+    return origin + Angle(radians: spread.radians / -2.0)
+  }
+
+  var max: Angle {
+    return origin + Angle(radians: spread.radians / 2.0)
   }
 }
 

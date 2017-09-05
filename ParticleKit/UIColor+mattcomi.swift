@@ -2,14 +2,14 @@
 
 import Foundation
 
-struct ColorRGBA {
-  var red: CGFloat
-  var green: CGFloat
-  var blue: CGFloat
-  var alpha: CGFloat
+public struct ColorRGBA {
+  public var red: CGFloat
+  public var green: CGFloat
+  public var blue: CGFloat
+  public var alpha: CGFloat
 
   /// Creates a ColorRGBA from a UIColor.
-  init(_ color: UIColor) {
+  public init(_ color: UIColor) {
     var red: CGFloat = 0
     var green: CGFloat = 0
     var blue: CGFloat = 0
