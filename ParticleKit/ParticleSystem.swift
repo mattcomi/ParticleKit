@@ -2,28 +2,9 @@
 
 import Foundation
 
-public class ParticleSystemIterator: IteratorProtocol {
-  var particle: Particle?
-
-  init(_ particle: Particle?) {
-    self.particle = particle
-  }
- 
-  public func next() -> Particle? {
-    if let particle = self.particle {
-      self.particle = particle.next
-      return particle
-    }
-
-    return nil
-  }
-}
-
-public class ParticleSystem: Sequence {
-  private var pool = [Particle]()
-  private var nextAvailableParticleIndex = 0
-  private weak var firstParticle: Particle?
-  private weak var lastParticle: Particle?
+public class ParticleSystem {
+  private var unusedParticleItems = LinkedList<Particle>()
+  private var particleItems = LinkedList<Particle>()
 
   public var properties = ParticleSystemProperties()
   public var colorGradient: Gradient<UIColor> = Gradient(first: UIColor.red, last: UIColor.yellow)
@@ -31,13 +12,11 @@ public class ParticleSystem: Sequence {
 
   /// Creates and returns a particle system.
   /// - parameter capacity: The number of particles that may exist at any given time. If a particle is emitted beyond 
-  ///                       this capacity, an existing particle will be replaced.
+  ///   this capacity, the oldest existing particle will be replaced.
   public init(capacity: Int) {
     for _ in 0..<capacity {
-      pool.append(Particle())
+      unusedParticleItems.append(value: Particle())
     }
-
-    nextAvailableParticleIndex = 0
   }
 
   /// Emits a particle.
@@ -61,79 +40,65 @@ public class ParticleSystem: Sequence {
     particle.lifetime = lifetime
     particle.remainingLifetime = lifetime
 
-    if firstParticle == nil {
-      firstParticle = particle
-      lastParticle = particle
-    } else {
-      lastParticle!.next = particle
-
-      particle.prev = lastParticle!
-      particle.next = nil
-
-      lastParticle = particle
-    }
+    particleItems.append(value: particle)
   }
 
   /// Updates the particle system.
   public func update() {
-    var particle = firstParticle
+    for item in particleItems.items {
+      let particle = item.value
 
-    while particle != nil {
-      if particle?.remainingLifetime == 0 {
-        // unlink this particle
-        if particle?.prev != nil {
-          particle?.prev?.next = particle?.next
-        }
-
-        if particle === firstParticle {
-          firstParticle = particle?.next
-        }
+      if particle.remainingLifetime == 0 {
+        item.removeFromLinkedList()
+        unusedParticleItems.append(value: particle)
       } else {
-        let life = 1 - (CGFloat(particle!.remainingLifetime) / CGFloat(particle!.lifetime))
+        let life = 1 - (CGFloat(particle.remainingLifetime) / CGFloat(particle.lifetime))
 
         let size = sizeGradient.value(at: life)
 
-        particle!.color = colorGradient.value(at: life)
+        particle.color = colorGradient.value(at: life)
 
         var quad = Quad(rect: CGRect(x: size / -2.0, y: size / -2.0, width: size, height: size))
 
-        quad.rotate(angle: particle!.angle)
-        quad.translate(particle!.position)
+        quad.rotate(angle: particle.angle)
+        quad.translate(particle.position)
 
-        particle?.quad = quad
+        particle.quad = quad
 
-        particle?.position = particle!.position + particle!.linearVelocity
-        particle?.angle = Angle(radians: particle!.angle.radians + particle!.angularVelocity.radians)
+        particle.position = particle.position + particle.linearVelocity
+        particle.angle = Angle(radians: particle.angle.radians + particle.angularVelocity.radians)
+
+        particle.remainingLifetime -= 1
       }
-
-      particle?.remainingLifetime -= 1
-
-      particle = particle?.next
     }
   }
 
   /// Removes all particles.
-  public func removeAllParticles() {
-    for i in 0..<pool.count {
-      pool[i].reset()
-    }
+  public func removeAll() {
+    for item in particleItems.items {
+      item.value.reset()
+      item.removeFromLinkedList()
 
-    nextAvailableParticleIndex = 0
+      unusedParticleItems.append(value: item.value)
+    }
   }
 
-  public func makeIterator() -> ParticleSystemIterator {
-    return ParticleSystemIterator(firstParticle)
+  var particles: LinkedListItemValueSequence<Particle> {
+    return LinkedListItemValueSequence(linkedList: particleItems)
   }
 
   private func nextAvailableParticle() -> Particle {
-    let particle = pool[nextAvailableParticleIndex]
+    let item: LinkedListItem<Particle>
 
-    nextAvailableParticleIndex += 1
-
-    if nextAvailableParticleIndex == pool.count {
-      nextAvailableParticleIndex = 0
+    if let unusedParticleItem = unusedParticleItems.last {
+      item = unusedParticleItem
+    } else {
+      item = particleItems.first!
+      item.value.reset()
     }
 
-    return particle
+    item.removeFromLinkedList()
+
+    return item.value
   }
 }
