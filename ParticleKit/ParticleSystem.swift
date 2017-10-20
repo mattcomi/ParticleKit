@@ -2,6 +2,7 @@
 
 import Foundation
 
+/// A 2D particle system.
 public class ParticleSystem {
   private var unusedParticleItems = LinkedList<Particle>()
   private var particleItems = LinkedList<Particle>()
@@ -17,6 +18,11 @@ public class ParticleSystem {
     for _ in 0..<capacity {
       unusedParticleItems.append(value: Particle())
     }
+  }
+
+  /// The particles.
+  public var particles: LinkedListItemValueSequence<Particle> {
+    return LinkedListItemValueSequence(linkedList: particleItems)
   }
 
   /// Emits a particle.
@@ -81,10 +87,6 @@ public class ParticleSystem {
 
       unusedParticleItems.append(value: item.value)
     }
-  }
-
-  var particles: LinkedListItemValueSequence<Particle> {
-    return LinkedListItemValueSequence(linkedList: particleItems)
   }
 
   private func nextAvailableParticle() -> Particle {
