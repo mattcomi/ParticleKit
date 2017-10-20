@@ -84,7 +84,7 @@ Note that the time unit is updates. In other words, a lifetime of 25 specifies 2
 And finally, render the particles:
 
 ```swift
-for particle in particleSystem {
+for particle in particleSystem.particles {
   let quad = particle.quad
   let color = particle.color
   
