@@ -7,7 +7,7 @@ public struct Matrix22 {
   public private(set) var columns = [CGPoint]()
 
   /// The identity matrix.
-  public static var identitiy = Matrix22(x0: 1, y0: 0, x1: 0, y1: 1)
+  public static var identity = Matrix22(x0: 1, y0: 0, x1: 0, y1: 1)
 
   /// Creates a matrix from an angle.
   public init(angle: Angle) {

@@ -19,9 +19,9 @@
 		B624B7B11F53E0D0009B2D4A /* CGPoint+mattcomi.swift in Sources */ = {isa = PBXBuildFile; fileRef = B624B7B01F53E0D0009B2D4A /* CGPoint+mattcomi.swift */; };
 		B624B7B71F53EE6C009B2D4A /* ParticleSystemProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B624B7B61F53EE6C009B2D4A /* ParticleSystemProperties.swift */; };
 		B64BB34F1F99E1CB00B0FD63 /* ReflectedStringConvertible.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B64BB34E1F99E1CB00B0FD63 /* ReflectedStringConvertible.framework */; };
-		B64BB3521F99E45000B0FD63 /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64BB3511F99E45000B0FD63 /* LinkedList.swift */; };
 		B655C3861F5E3016009CD80A /* ParticleKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B655C3851F5E3016009CD80A /* ParticleKitTests.swift */; };
 		B655C3881F5E3016009CD80A /* ParticleKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B624B7951F53CC80009B2D4A /* ParticleKit.framework */; };
+		B6CA211A1F9DE003009D9C29 /* ReusePool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CA21191F9DE003009D9C29 /* ReusePool.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,10 +49,10 @@
 		B624B7B01F53E0D0009B2D4A /* CGPoint+mattcomi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+mattcomi.swift"; sourceTree = "<group>"; };
 		B624B7B61F53EE6C009B2D4A /* ParticleSystemProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticleSystemProperties.swift; sourceTree = "<group>"; };
 		B64BB34E1F99E1CB00B0FD63 /* ReflectedStringConvertible.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReflectedStringConvertible.framework; path = Carthage/Build/iOS/ReflectedStringConvertible.framework; sourceTree = "<group>"; };
-		B64BB3511F99E45000B0FD63 /* LinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
 		B655C3831F5E3016009CD80A /* ParticleKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParticleKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B655C3851F5E3016009CD80A /* ParticleKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleKitTests.swift; sourceTree = "<group>"; };
 		B655C3871F5E3016009CD80A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B6CA21191F9DE003009D9C29 /* ReusePool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusePool.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +101,6 @@
 				B624B7B01F53E0D0009B2D4A /* CGPoint+mattcomi.swift */,
 				B624B7A61F53D138009B2D4A /* Gradient.swift */,
 				B624B7991F53CC80009B2D4A /* Info.plist */,
-				B64BB3511F99E45000B0FD63 /* LinkedList.swift */,
 				B624B7AA1F53D388009B2D4A /* Math.swift */,
 				B624B7A21F53CDE8009B2D4A /* Matrix22.swift */,
 				B624B7AC1F53DBD8009B2D4A /* Particle.swift */,
@@ -109,6 +108,7 @@
 				B624B7AE1F53DC80009B2D4A /* ParticleSystem.swift */,
 				B624B7B61F53EE6C009B2D4A /* ParticleSystemProperties.swift */,
 				B624B7A01F53CCAB009B2D4A /* Quad.swift */,
+				B6CA21191F9DE003009D9C29 /* ReusePool.swift */,
 				B624B7A81F53D257009B2D4A /* UIColor+mattcomi.swift */,
 			);
 			path = ParticleKit;
@@ -266,12 +266,12 @@
 				B624B7A31F53CDE8009B2D4A /* Matrix22.swift in Sources */,
 				B624B7A51F53CE12009B2D4A /* Angle.swift in Sources */,
 				B624B7A11F53CCAB009B2D4A /* Quad.swift in Sources */,
+				B6CA211A1F9DE003009D9C29 /* ReusePool.swift in Sources */,
 				B624B7B11F53E0D0009B2D4A /* CGPoint+mattcomi.swift in Sources */,
 				B624B7AD1F53DBD8009B2D4A /* Particle.swift in Sources */,
 				B624B7A91F53D257009B2D4A /* UIColor+mattcomi.swift in Sources */,
 				B624B7A71F53D138009B2D4A /* Gradient.swift in Sources */,
 				B624B7B71F53EE6C009B2D4A /* ParticleSystemProperties.swift in Sources */,
-				B64BB3521F99E45000B0FD63 /* LinkedList.swift in Sources */,
 				B624B7AB1F53D388009B2D4A /* Math.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

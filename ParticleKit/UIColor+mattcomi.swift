@@ -2,6 +2,7 @@
 
 import Foundation
 
+/// The components that make up a `UIColor` in the RGB color space.
 public struct ColorRGBA {
   public var red: CGFloat
   public var green: CGFloat

@@ -32,7 +32,7 @@ class ParticleKitTests: XCTestCase {
   }
 
   func testCapacity() {
-    let particleSystem = ParticleSystem(capacity: 3)
+    let particleSystem = ParticleSystem(size: 3)
     particleSystem.properties.lifetime = ParticleSystemValue(origin: 100, spread: 0)
     particleSystem.properties.angularVelocity = ParticleSystemValue(origin: .zero, spread: .zero)
 
@@ -82,7 +82,7 @@ class ParticleKitTests: XCTestCase {
   }
 
   func testRemoveAllParticles() {
-    let particleSystem = ParticleSystem(capacity: 3)
+    let particleSystem = ParticleSystem(size: 3)
 
     for _ in 0..<3 {
       particleSystem.emit()
@@ -93,6 +93,10 @@ class ParticleKitTests: XCTestCase {
     particleSystem.removeAll()
 
     XCTAssertEqual([Particle](particleSystem.particles).count, 0)
+
+    particleSystem.emit()
+
+    XCTAssertEqual([Particle](particleSystem.particles).count, 1)
   }
 
   func testQuad() {
@@ -116,5 +120,21 @@ class ParticleKitTests: XCTestCase {
     XCTAssert(!quad.contains(point: CGPoint(x: 25, y: 15)))
     XCTAssert(!quad.contains(point: CGPoint(x: 15, y: 5)))
     XCTAssert(!quad.contains(point: CGPoint(x: 15, y: 25)))
+  }
+
+  func testPerformance() {
+    let particleSystem = ParticleSystem(size: 1024)
+
+    autoreleasepool {
+      measure {
+        for _ in 0..<1024 {
+          for _ in 0..<10 {
+            particleSystem.emit()
+          }
+
+          particleSystem.update()
+        }
+      }
+    }
   }
 }

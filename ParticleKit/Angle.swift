@@ -2,6 +2,7 @@
 
 import Foundation
 
+/// An angle that may be expressed in radians or degrees.
 public struct Angle: Equatable {
   /// A zero angle.
   public static let zero = Angle(radians: 0)

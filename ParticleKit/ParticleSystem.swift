@@ -4,8 +4,7 @@ import Foundation
 
 /// A 2D particle system.
 public class ParticleSystem {
-  private var unusedParticleItems = LinkedList<Particle>()
-  private var particleItems = LinkedList<Particle>()
+  private var pool: ReusePool<Particle>
 
   public var properties = ParticleSystemProperties()
   public var colorGradient: Gradient<UIColor> = Gradient(first: UIColor.red, last: UIColor.yellow)
@@ -14,20 +13,18 @@ public class ParticleSystem {
   /// Creates and returns a particle system.
   /// - parameter capacity: The number of particles that may exist at any given time. If a particle is emitted beyond 
   ///   this capacity, the oldest existing particle will be replaced.
-  public init(capacity: Int) {
-    for _ in 0..<capacity {
-      unusedParticleItems.append(value: Particle())
-    }
+  public init(size: Int) {
+    pool = ReusePool(size: size)
   }
 
   /// The particles.
-  public var particles: LinkedListItemValueSequence<Particle> {
-    return LinkedListItemValueSequence(linkedList: particleItems)
+  public var particles: ReusePoolSequence<Particle> {
+    return pool.unavailableElements
   }
 
   /// Emits a particle.
   public func emit() {
-    let particle = nextAvailableParticle()
+    guard let particle = dequeueParticle() else { fatalError() }
 
     particle.position = properties.position.random
 
@@ -45,18 +42,13 @@ public class ParticleSystem {
 
     particle.lifetime = lifetime
     particle.remainingLifetime = lifetime
-
-    particleItems.append(value: particle)
   }
 
   /// Updates the particle system.
   public func update() {
-    for item in particleItems.items {
-      let particle = item.value
-
+    for particle in pool.unavailableElements {
       if particle.remainingLifetime == 0 {
-        item.removeFromLinkedList()
-        unusedParticleItems.append(value: particle)
+        pool.enqueue(particle)
       } else {
         let life = 1 - (CGFloat(particle.remainingLifetime) / CGFloat(particle.lifetime))
 
@@ -81,26 +73,20 @@ public class ParticleSystem {
 
   /// Removes all particles.
   public func removeAll() {
-    for item in particleItems.items {
-      item.value.reset()
-      item.removeFromLinkedList()
-
-      unusedParticleItems.append(value: item.value)
+    for item in pool.unavailableElements {
+      pool.enqueue(item)
     }
   }
 
-  private func nextAvailableParticle() -> Particle {
-    let item: LinkedListItem<Particle>
-
-    if let unusedParticleItem = unusedParticleItems.last {
-      item = unusedParticleItem
-    } else {
-      item = particleItems.first!
-      item.value.reset()
+  private func dequeueParticle() -> Particle? {
+    if let particle = pool.dequeueFirstAvailable() {
+      return particle
     }
 
-    item.removeFromLinkedList()
+    if let particle = pool.dequeueFirstUnavailable() {
+      return particle
+    }
 
-    return item.value
+    return nil
   }
 }

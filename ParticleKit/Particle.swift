@@ -3,7 +3,7 @@
 import Foundation
 import ReflectedStringConvertible
 
-public class Particle: ReflectedStringConvertible {
+public class Particle: ReflectedStringConvertible, ReusePoolElement {
   public internal(set) var position: CGPoint
   public internal(set) var linearVelocity: CGPoint
   public internal(set) var angle: Angle
@@ -13,7 +13,7 @@ public class Particle: ReflectedStringConvertible {
   public internal(set) var quad = Quad(rect: .zero)
   public internal(set) var color = UIColor.white
 
-  convenience init() {
+  required convenience public init() {
     self.init(
       position: .zero,
       linearVelocity: .zero,
@@ -37,7 +37,9 @@ public class Particle: ReflectedStringConvertible {
     self.remainingLifetime = lifetime
   }
 
-  func reset() {
+  public var reusePoolItem: ReusePoolItem?
+
+  public func prepareForReuse() {
     position = .zero
     linearVelocity = .zero
     angle = .zero
