@@ -10,6 +10,8 @@ public struct Quad {
 
   /// Creates a Quad with points of `(0, 0)`.
   public init() {
+    points.reserveCapacity(numberOfPoints)
+
     for _ in 0..<numberOfPoints {
       points.append(.zero)
     }
@@ -17,6 +19,8 @@ public struct Quad {
 
   /// Creates a Quad with a rect.
   public init(rect: CGRect) {
+    points.reserveCapacity(4)
+
     points.append(rect.origin)
     points.append(CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y))
     points.append(CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y + rect.size.height))
@@ -38,13 +42,14 @@ public struct Quad {
   /// Translates the Quad.
   public mutating func translate(_ translation: CGPoint) {
     for i in 0..<numberOfPoints {
-      points[i].x += translation.x
-      points[i].y += translation.y
+      points[i] += translation
     }
   }
 
   /// Rotates the Quad.
   public mutating func rotate(angle: Angle) {
+    guard angle != .zero else { return }
+
     let matrix = Matrix22(angle: angle)
 
     for i in 0..<numberOfPoints {

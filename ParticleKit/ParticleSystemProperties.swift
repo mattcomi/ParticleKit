@@ -85,7 +85,7 @@ public extension ParticleSystemValue where T == Angle {
 
 /// The properties of emitted particles.
 public struct ParticleSystemProperties {
-  public init() { }
+  public init() {}
 
   /// The position at which particles should be emitted.
   public var position: ParticleSystemValue<CGPoint> = ParticleSystemValue(origin: .zero, spread: .zero)

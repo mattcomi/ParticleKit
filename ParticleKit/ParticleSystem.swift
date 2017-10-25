@@ -11,8 +11,8 @@ public class ParticleSystem {
   public var sizeGradient: Gradient<CGFloat> = Gradient(first: 1, last: 1)
 
   /// Creates and returns a particle system.
-  /// - parameter capacity: The number of particles that may exist at any given time. If a particle is emitted beyond 
-  ///   this capacity, the oldest existing particle will be replaced.
+  /// - parameter size: The number of particles that may exist at any given time. If a particle is emitted beyond
+  ///   this size, the oldest existing particle will be replaced.
   public init(size: Int) {
     pool = ReusePool(size: size)
   }

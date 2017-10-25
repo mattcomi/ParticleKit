@@ -12,7 +12,7 @@ public struct Angle: Equatable {
 
   /// Creates an angle in degrees.
   public init(degrees: CGFloat) {
-    self.radians = degrees * (.pi / 180)
+    radians = degrees * (.pi / 180)
   }
 
   /// Creates an angle in radians.

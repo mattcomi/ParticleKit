@@ -19,7 +19,7 @@ import ParticleKit
 Create a `ParticleSystem`:
 
 ```swift
-let system = ParticleSystem(capacity: 1024)
+let system = ParticleSystem(size: 1024)
 ```
 
 The `capacity` parameter specifies how many particles may exist at any one time. An existing particle will be replaced if a particle is emitted beyond this capacity.

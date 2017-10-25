@@ -1,9 +1,8 @@
 // Copyright © 2017 Matt Comi. All rights reserved.
 
 import Foundation
-import ReflectedStringConvertible
 
-public class Particle: ReflectedStringConvertible, ReusePoolElement {
+public class Particle: ReusePoolElement {
   public internal(set) var position: CGPoint
   public internal(set) var linearVelocity: CGPoint
   public internal(set) var angle: Angle
@@ -39,11 +38,5 @@ public class Particle: ReflectedStringConvertible, ReusePoolElement {
 
   public var reusePoolItem: ReusePoolItem?
 
-  public func prepareForReuse() {
-    position = .zero
-    linearVelocity = .zero
-    angle = .zero
-    angularVelocity = .zero
-    lifetime = 0
-  }
+  public func prepareForReuse() {}
 }

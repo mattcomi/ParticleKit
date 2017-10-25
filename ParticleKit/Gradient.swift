@@ -22,7 +22,7 @@ public class Gradient<T:Interpolatable> {
   }
 
   /// Creates an empty gradient.
-  public init() { }
+  public init() {}
 
   /// Adds a value at the specified location, replacing an existing value if necessary.
   /// - parameter location: The location of the value.

@@ -125,15 +125,13 @@ class ParticleKitTests: XCTestCase {
   func testPerformance() {
     let particleSystem = ParticleSystem(size: 1024)
 
-    autoreleasepool {
-      measure {
-        for _ in 0..<1024 {
-          for _ in 0..<10 {
-            particleSystem.emit()
-          }
-
-          particleSystem.update()
+    measure {
+      for _ in 0..<1024 {
+        for _ in 0..<10 {
+          particleSystem.emit()
         }
+
+        particleSystem.update()
       }
     }
   }

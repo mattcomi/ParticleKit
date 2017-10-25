@@ -18,9 +18,9 @@
 		B624B7AF1F53DC80009B2D4A /* ParticleSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B624B7AE1F53DC80009B2D4A /* ParticleSystem.swift */; };
 		B624B7B11F53E0D0009B2D4A /* CGPoint+mattcomi.swift in Sources */ = {isa = PBXBuildFile; fileRef = B624B7B01F53E0D0009B2D4A /* CGPoint+mattcomi.swift */; };
 		B624B7B71F53EE6C009B2D4A /* ParticleSystemProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B624B7B61F53EE6C009B2D4A /* ParticleSystemProperties.swift */; };
-		B64BB34F1F99E1CB00B0FD63 /* ReflectedStringConvertible.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B64BB34E1F99E1CB00B0FD63 /* ReflectedStringConvertible.framework */; };
 		B655C3861F5E3016009CD80A /* ParticleKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B655C3851F5E3016009CD80A /* ParticleKitTests.swift */; };
 		B655C3881F5E3016009CD80A /* ParticleKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B624B7951F53CC80009B2D4A /* ParticleKit.framework */; };
+		B6C074B91F9F402E0047BC0B /* ReusePoolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C074B81F9F402E0047BC0B /* ReusePoolTests.swift */; };
 		B6CA211A1F9DE003009D9C29 /* ReusePool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CA21191F9DE003009D9C29 /* ReusePool.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +52,7 @@
 		B655C3831F5E3016009CD80A /* ParticleKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParticleKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B655C3851F5E3016009CD80A /* ParticleKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleKitTests.swift; sourceTree = "<group>"; };
 		B655C3871F5E3016009CD80A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B6C074B81F9F402E0047BC0B /* ReusePoolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusePoolTests.swift; sourceTree = "<group>"; };
 		B6CA21191F9DE003009D9C29 /* ReusePool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusePool.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -60,7 +61,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B64BB34F1F99E1CB00B0FD63 /* ReflectedStringConvertible.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +127,7 @@
 			children = (
 				B655C3851F5E3016009CD80A /* ParticleKitTests.swift */,
 				B655C3871F5E3016009CD80A /* Info.plist */,
+				B6C074B81F9F402E0047BC0B /* ReusePoolTests.swift */,
 			);
 			path = ParticleKitTests;
 			sourceTree = "<group>";
@@ -153,7 +154,6 @@
 				B624B7911F53CC80009B2D4A /* Frameworks */,
 				B624B7921F53CC80009B2D4A /* Headers */,
 				B624B7931F53CC80009B2D4A /* Resources */,
-				B64BB3501F99E1FD00B0FD63 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -240,23 +240,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		B64BB3501F99E1FD00B0FD63 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/ReflectedStringConvertible.framework",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		B624B7901F53CC80009B2D4A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -280,6 +263,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6C074B91F9F402E0047BC0B /* ReusePoolTests.swift in Sources */,
 				B655C3861F5E3016009CD80A /* ParticleKitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -418,10 +402,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
 				INFOPLIST_FILE = ParticleKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -445,10 +425,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
 				INFOPLIST_FILE = ParticleKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

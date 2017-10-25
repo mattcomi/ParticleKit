@@ -6,23 +6,24 @@ import Foundation
 public protocol ReusePoolElement: class {
   init()
 
-  /// An item managed by the `ReusePool` in which this element is contained.
+  /// Returns a non `nil` `ReusePoolItem` if this object is being managed by a `ReusePool`.
   var reusePoolItem: ReusePoolItem? { get set }
 
-  /// Prepares the `ReusePoolElement` for reuse. This method is invoked prior to the `ReusePoolElement` being dequeued.
+  /// Prepares this `ReusePoolElement` for reuse. This method is invoked by the `ReusePool` after this
+  /// `ReusePoolElement` is dequeued.
   func prepareForReuse()
 }
 
 public class ReusePoolItem {
-  internal init(reusePool: ReusePoolProtocol, element: ReusePoolElement) {
+  internal init(reusePool: ReusePoolProtocol, reusePoolElement: ReusePoolElement) {
     self.reusePool = reusePool
-    self.element = element
+    self.reusePoolElement = reusePoolElement
   }
 
   internal var isAvailable: Bool = true
 
   internal unowned var reusePool: ReusePoolProtocol
-  internal unowned var element: ReusePoolElement
+  internal unowned var reusePoolElement: ReusePoolElement
   internal weak var previous: ReusePoolItem?
   internal weak var next: ReusePoolItem?
 }
@@ -36,7 +37,7 @@ public class ReusePoolIterator<T: ReusePoolElement>: IteratorProtocol {
 
   public func next() -> T? {
     if let reusePoolElement = self.reusePoolElement {
-      self.reusePoolElement = reusePoolElement.reusePoolItem!.next?.element
+      self.reusePoolElement = reusePoolElement.reusePoolItem!.next?.reusePoolElement
 
       return reusePoolElement as? T
     }
@@ -61,6 +62,7 @@ public class ReusePoolSequence<T: ReusePoolElement>: Sequence {
 
 internal protocol ReusePoolProtocol: class {}
 
+/// A pool of `ReusePoolElement` objects. Dequeue and enqueue operations are O(1).
 public class ReusePool<T: ReusePoolElement>: ReusePoolProtocol {
   private var reusePool = [ReusePoolElement]()
 
@@ -68,13 +70,18 @@ public class ReusePool<T: ReusePoolElement>: ReusePoolProtocol {
   private var firstUnavailableElement: ReusePoolElement?
   private var lastUnavailableElement: ReusePoolElement?
 
+  public private(set) var numberOfAvailableElements: Int = 0
+  public private(set) var numberOfUnavailableElements: Int = 0
+
   /// Creates a `ReusePool` with the specified `size`.
   /// - parameter size: The number of elements that this `ReusePool` should manage.
   public init(size: Int) {
+    reusePool.reserveCapacity(size)
+
     for i in 0..<size {
       let reusePoolElement = T()
 
-      reusePoolElement.reusePoolItem = ReusePoolItem(reusePool: self, element: reusePoolElement)
+      reusePoolElement.reusePoolItem = ReusePoolItem(reusePool: self, reusePoolElement: reusePoolElement)
 
       if i > 0 {
         reusePoolElement.reusePoolItem!.previous = reusePool[i - 1].reusePoolItem!
@@ -85,6 +92,8 @@ public class ReusePool<T: ReusePoolElement>: ReusePoolProtocol {
     }
 
     firstAvailableElement = reusePool[0]
+
+    numberOfAvailableElements = size
   }
 
   /// The available elements.
@@ -104,7 +113,7 @@ public class ReusePool<T: ReusePoolElement>: ReusePoolProtocol {
     guard reusePoolElement.reusePoolItem!.reusePool === self else { fatalError("Unexpected reusePool") }
     guard reusePoolElement.reusePoolItem!.isAvailable else { fatalError("Expected isAvailable") }
 
-    firstAvailableElement = reusePoolElement.reusePoolItem!.next?.element
+    firstAvailableElement = reusePoolElement.reusePoolItem!.next?.reusePoolElement
 
     if firstUnavailableElement == nil {
       firstUnavailableElement = reusePoolElement
@@ -118,15 +127,19 @@ public class ReusePool<T: ReusePoolElement>: ReusePoolProtocol {
     lastUnavailableElement = reusePoolElement
 
     reusePoolElement.reusePoolItem!.isAvailable = false
-    reusePoolElement.reusePoolItem!.element.prepareForReuse()
+    reusePoolElement.reusePoolItem!.reusePoolElement.prepareForReuse()
+
+    numberOfAvailableElements -= 1
+    numberOfUnavailableElements += 1
 
     return reusePoolElement as? T
   }
 
-  /// Dequeues the first unavailable elements if one exists. This is the element that was least recently enqueued.
+  /// Dequeues the first unavailable element if one exists. This is the element that was least recently enqueued.
   public func dequeueFirstUnavailable() -> T? {
     if let firstUnavailableElement = self.firstUnavailableElement {
       enqueue(firstUnavailableElement as! T)
+
       return dequeueFirstAvailable()
     } else {
       return nil
@@ -136,7 +149,6 @@ public class ReusePool<T: ReusePoolElement>: ReusePoolProtocol {
   /// Enqueues an element that was previously dequeued. It is a fatal error to enqueue an element that:
   /// - Is not managed by this `ReusePool`.
   /// - Has already been enqueued.
-  ///
   /// - parameter reusePoolElement - The element to enqueue.
   public func enqueue(_ reusePoolElement: T) {
     guard let reusePoolItem = reusePoolElement.reusePoolItem else { fatalError("Expected reusePoolItem") }
@@ -145,16 +157,24 @@ public class ReusePool<T: ReusePoolElement>: ReusePoolProtocol {
     guard !reusePoolItem.isAvailable else { fatalError("Expected !isAvailable") }
 
     if firstUnavailableElement === reusePoolElement {
-      firstUnavailableElement = firstUnavailableElement!.reusePoolItem!.next?.element
+      firstUnavailableElement = firstUnavailableElement!.reusePoolItem!.next?.reusePoolElement
     }
 
     if lastUnavailableElement === reusePoolElement {
-      lastUnavailableElement = nil
+      lastUnavailableElement = lastUnavailableElement!.reusePoolItem!.previous?.reusePoolElement
     }
 
+    reusePoolElement.reusePoolItem!.previous?.next = reusePoolElement.reusePoolItem!.next
+    reusePoolElement.reusePoolItem!.next?.previous = reusePoolElement.reusePoolItem!.previous
+
     firstAvailableElement?.reusePoolItem!.previous = reusePoolElement.reusePoolItem!
+
+    reusePoolElement.reusePoolItem!.previous = nil
     reusePoolElement.reusePoolItem!.next = firstAvailableElement?.reusePoolItem!
     reusePoolElement.reusePoolItem!.isAvailable = true
+
+    numberOfAvailableElements += 1
+    numberOfUnavailableElements -= 1
 
     firstAvailableElement = reusePoolElement
   }

@@ -20,6 +20,8 @@ public struct Matrix22 {
   }
 
   public init(x0: CGFloat, y0: CGFloat, x1: CGFloat, y1: CGFloat) {
+    columns.reserveCapacity(2)
+
     columns.append(CGPoint(x: x0, y: y0))
     columns.append(CGPoint(x: x1, y: y1))
   }
