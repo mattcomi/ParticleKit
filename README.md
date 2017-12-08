@@ -1,3 +1,5 @@
+[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=5a2ad6d15e531e0001c7658a&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/5a2ad6d15e531e0001c7658a/build/latest?branch=master&style=flat)
+
 # ParticleKit
 A 2D particle system.
 
